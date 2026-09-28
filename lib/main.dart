@@ -24,10 +24,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Filmes'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text('Filmes'), centerTitle: true),
       body: ListView(
         children: [
           ListTile(
@@ -35,7 +32,12 @@ class HomePage extends StatelessWidget {
             title: const Text('O Poderoso Chefão'),
             subtitle: const Text('Drama / Crime'),
             trailing: const Icon(Icons.chevron_right),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const DetalhePage()),
+              );
+            },
           ),
           const Divider(),
           ListTile(
@@ -43,7 +45,12 @@ class HomePage extends StatelessWidget {
             title: const Text('Interstellar'),
             subtitle: const Text('Ficção Científica'),
             trailing: const Icon(Icons.chevron_right),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const DetalhePage()),
+              );
+            },
           ),
           const Divider(),
           ListTile(
@@ -51,7 +58,12 @@ class HomePage extends StatelessWidget {
             title: const Text('A Viagem de Chihiro'),
             subtitle: const Text('Animação / Aventura'),
             trailing: const Icon(Icons.chevron_right),
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const DetalhePage()),
+              );
+            },
           ),
         ],
       ),
@@ -66,9 +78,7 @@ class DetalhePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Detalhes do Filme'),
-      ),
+      appBar: AppBar(title: const Text('Detalhes do Filme')),
       body: const Center(
         child: Text(
           'Informações detalhadas sobre o filme selecionado.',
