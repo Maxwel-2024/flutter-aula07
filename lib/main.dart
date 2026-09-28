@@ -9,10 +9,14 @@ class MeuApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'App de Filmes',
-      home: HomePage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const HomePage(),
+        '/detalhes': (context) => const DetalhePage(),
+      },
     );
   }
 }
@@ -21,14 +25,13 @@ class MeuApp extends StatelessWidget {
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-  // Função para navegar para os detalhes e aguardar o resultado
   Future<void> _abrirDetalhes(BuildContext context, String titulo) async {
-    final resultado = await Navigator.push<String>(
+    final resultado = await Navigator.pushNamed<String>(
       context,
-      MaterialPageRoute(builder: (context) => DetalhePage(titulo: titulo)),
+      '/detalhes',
+      arguments: titulo,
     );
 
-    // Se a tela voltou com algum resultado (não nulo), mostra a SnackBar
     if (resultado != null && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -42,7 +45,10 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Filmes'), centerTitle: true),
+      appBar: AppBar(
+        title: const Text('Filmes'),
+        centerTitle: true,
+      ),
       body: ListView(
         children: [
           ListTile(
@@ -76,14 +82,16 @@ class HomePage extends StatelessWidget {
 
 // Tela de Detalhes (DetalhePage)
 class DetalhePage extends StatelessWidget {
-  final String titulo;
-
-  const DetalhePage({super.key, required this.titulo});
+  const DetalhePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final titulo = ModalRoute.of(context)!.settings.arguments as String;
+
     return Scaffold(
-      appBar: AppBar(title: Text(titulo)),
+      appBar: AppBar(
+        title: Text(titulo),
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -103,8 +111,10 @@ class DetalhePage extends StatelessWidget {
                 icon: const Icon(Icons.check),
                 label: const Text('Marcar como assistido'),
                 onPressed: () {
-                  // Fecha a tela devolvendo a mensagem de confirmação
-                  Navigator.pop(context, '$titulo marcado como assistido!');
+                  Navigator.pop(
+                    context,
+                    '$titulo marcado como assistido!',
+                  );
                 },
               ),
             ],
