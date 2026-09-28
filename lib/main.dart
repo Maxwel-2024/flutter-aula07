@@ -24,7 +24,10 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Filmes'), centerTitle: true),
+      appBar: AppBar(
+        title: const Text('Filmes'),
+        centerTitle: true,
+      ),
       body: ListView(
         children: [
           ListTile(
@@ -35,7 +38,11 @@ class HomePage extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const DetalhePage()),
+                MaterialPageRoute(
+                  builder: (context) => const DetalhePage(
+                    titulo: 'O Poderoso Chefão',
+                  ),
+                ),
               );
             },
           ),
@@ -48,7 +55,11 @@ class HomePage extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const DetalhePage()),
+                MaterialPageRoute(
+                  builder: (context) => const DetalhePage(
+                    titulo: 'Interstellar',
+                  ),
+                ),
               );
             },
           ),
@@ -61,7 +72,11 @@ class HomePage extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const DetalhePage()),
+                MaterialPageRoute(
+                  builder: (context) => const DetalhePage(
+                    titulo: 'A Viagem de Chihiro',
+                  ),
+                ),
               );
             },
           ),
@@ -73,17 +88,27 @@ class HomePage extends StatelessWidget {
 
 // Tela de Detalhes (DetalhePage)
 class DetalhePage extends StatelessWidget {
-  const DetalhePage({super.key});
+  final String titulo;
+
+  const DetalhePage({
+    super.key,
+    required this.titulo,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Detalhes do Filme')),
-      body: const Center(
-        child: Text(
-          'Informações detalhadas sobre o filme selecionado.',
-          style: TextStyle(fontSize: 16),
-          textAlign: TextAlign.center,
+      appBar: AppBar(
+        title: Text(titulo),
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            'Você selecionou o filme: $titulo',
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            textAlign: TextAlign.center,
+          ),
         ),
       ),
     );
