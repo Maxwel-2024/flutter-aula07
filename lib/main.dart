@@ -21,13 +21,28 @@ class MeuApp extends StatelessWidget {
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
+  // Função para navegar para os detalhes e aguardar o resultado
+  Future<void> _abrirDetalhes(BuildContext context, String titulo) async {
+    final resultado = await Navigator.push<String>(
+      context,
+      MaterialPageRoute(builder: (context) => DetalhePage(titulo: titulo)),
+    );
+
+    // Se a tela voltou com algum resultado (não nulo), mostra a SnackBar
+    if (resultado != null && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(resultado),
+          duration: const Duration(seconds: 3),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Filmes'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text('Filmes'), centerTitle: true),
       body: ListView(
         children: [
           ListTile(
@@ -35,16 +50,7 @@ class HomePage extends StatelessWidget {
             title: const Text('O Poderoso Chefão'),
             subtitle: const Text('Drama / Crime'),
             trailing: const Icon(Icons.chevron_right),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const DetalhePage(
-                    titulo: 'O Poderoso Chefão',
-                  ),
-                ),
-              );
-            },
+            onTap: () => _abrirDetalhes(context, 'O Poderoso Chefão'),
           ),
           const Divider(),
           ListTile(
@@ -52,16 +58,7 @@ class HomePage extends StatelessWidget {
             title: const Text('Interstellar'),
             subtitle: const Text('Ficção Científica'),
             trailing: const Icon(Icons.chevron_right),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const DetalhePage(
-                    titulo: 'Interstellar',
-                  ),
-                ),
-              );
-            },
+            onTap: () => _abrirDetalhes(context, 'Interstellar'),
           ),
           const Divider(),
           ListTile(
@@ -69,16 +66,7 @@ class HomePage extends StatelessWidget {
             title: const Text('A Viagem de Chihiro'),
             subtitle: const Text('Animação / Aventura'),
             trailing: const Icon(Icons.chevron_right),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const DetalhePage(
-                    titulo: 'A Viagem de Chihiro',
-                  ),
-                ),
-              );
-            },
+            onTap: () => _abrirDetalhes(context, 'A Viagem de Chihiro'),
           ),
         ],
       ),
@@ -90,24 +78,36 @@ class HomePage extends StatelessWidget {
 class DetalhePage extends StatelessWidget {
   final String titulo;
 
-  const DetalhePage({
-    super.key,
-    required this.titulo,
-  });
+  const DetalhePage({super.key, required this.titulo});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(titulo),
-      ),
+      appBar: AppBar(title: Text(titulo)),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Text(
-            'Você selecionou o filme: $titulo',
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            textAlign: TextAlign.center,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Você selecionou o filme: $titulo',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton.icon(
+                icon: const Icon(Icons.check),
+                label: const Text('Marcar como assistido'),
+                onPressed: () {
+                  // Fecha a tela devolvendo a mensagem de confirmação
+                  Navigator.pop(context, '$titulo marcado como assistido!');
+                },
+              ),
+            ],
           ),
         ),
       ),
