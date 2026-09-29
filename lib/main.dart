@@ -45,7 +45,60 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Filmes'), centerTitle: true),
+      appBar: AppBar(
+        title: const Text('Filmes'),
+        centerTitle: true,
+      ),
+      // Adição do Menu Lateral (Drawer)
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.blue,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.movie_filter, size: 48, color: Colors.white),
+                  SizedBox(height: 8),
+                  Text(
+                    'CineApp',
+                    style: TextStyle(color: Colors.white, fontSize: 22),
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.home),
+              title: const Text('Início'),
+              onTap: () {
+                // Fecha o Drawer
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.info),
+              title: const Text('Sobre'),
+              onTap: () {
+                // Fecha o Drawer primeiro
+                Navigator.pop(context);
+                // Exibe uma caixa de diálogo informativa
+                showAboutDialog(
+                  context: context,
+                  applicationName: 'App de Filmes',
+                  applicationVersion: '1.0.0',
+                  children: [
+                    const Text('Aplicativo desenvolvido durante os estudos de navegação e rotas no Flutter.'),
+                  ],
+                );
+              },
+            ),
+          ],
+        ),
+      ),
       body: ListView(
         children: [
           ListTile(
