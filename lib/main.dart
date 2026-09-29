@@ -26,13 +26,13 @@ class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   Future<void> _abrirDetalhes(BuildContext context, String titulo) async {
-    final resultado = await Navigator.pushNamed<String>(
+    final resultado = await Navigator.pushNamed(
       context,
       '/detalhes',
       arguments: titulo,
     );
 
-    if (resultado != null && context.mounted) {
+    if (resultado is String && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(resultado),
@@ -45,10 +45,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Filmes'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text('Filmes'), centerTitle: true),
       body: ListView(
         children: [
           ListTile(
@@ -89,9 +86,7 @@ class DetalhePage extends StatelessWidget {
     final titulo = ModalRoute.of(context)!.settings.arguments as String;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(titulo),
-      ),
+      appBar: AppBar(title: Text(titulo)),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -111,10 +106,7 @@ class DetalhePage extends StatelessWidget {
                 icon: const Icon(Icons.check),
                 label: const Text('Marcar como assistido'),
                 onPressed: () {
-                  Navigator.pop(
-                    context,
-                    '$titulo marcado como assistido!',
-                  );
+                  Navigator.pop(context, '$titulo marcado como assistido!');
                 },
               ),
             ],
